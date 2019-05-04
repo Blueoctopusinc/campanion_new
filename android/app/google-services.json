@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "417311122578",
+    "firebase_url": "https://campanion-979dc.firebaseio.com",
+    "project_id": "campanion-979dc",
+    "storage_bucket": "campanion-979dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417311122578:android:d198076f64fe5458",
+        "android_client_info": {
+          "package_name": "com.blueoctopusink.campanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417311122578-r9fva8j7ame5mpgf833h21etm5nbu99r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blueoctopusink.campanion",
+            "certificate_hash": "cca04d846c849d1d85deefbfbbaeb55b6624cbf4"
+          }
+        },
+        {
+          "client_id": "417311122578-2g3i1u6hgljse54tpc49l32e7u6hilrr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blueoctopusink.campanion",
+            "certificate_hash": "504b363ea048f3b1e973c56642e07acbcb165fbe"
+          }
+        },
+        {
+          "client_id": "417311122578-a2fmuubv6jvu6emoomsi41uorbgsgaqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC0n0PLgH5OTvl-6JdQ7TGJ2xk8ao99B0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417311122578-a2fmuubv6jvu6emoomsi41uorbgsgaqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
