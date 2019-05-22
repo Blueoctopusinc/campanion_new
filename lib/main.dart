@@ -37,7 +37,7 @@ class authButtons extends StatelessWidget{
                         textColor: Colors.black,
                         child: Text('Login with Google')),
                     MaterialButton(
-                        onPressed: () => authService.signOut(),
+                        onPressed: () => authService.signOut(context),
                         color: Colors.white,
                         textColor: Colors.black,
                         child: Text('Logout')),

@@ -3,9 +3,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 import 'map.dart';
+import 'main.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:campanion_new/places.dart';
+import 'add_location_screen.dart';
 
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -20,6 +22,7 @@ class AuthService {
   String eMail;
   String displayName;
   String profilePhoto;
+  String uid;
 
   AuthService() {
     user = Observable(_auth.onAuthStateChanged);
@@ -43,8 +46,9 @@ class AuthService {
     print("here at sign in");
     GoogleSignInAccount googleUsers = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUsers.authentication;
-    FirebaseUser user = await _auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+    final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+    
+    FirebaseUser user = await _auth.signInWithCredential(credential);
     updateUserData(user);
     print("signed in as " + user.displayName);
     loading.add(false);
@@ -62,6 +66,7 @@ class AuthService {
     this.displayName = user.displayName;
     this.eMail = user.email;
     this.profilePhoto = user.photoUrl;
+    this.uid = user.uid;
     return ref.setData({
       'uid': user.uid,
       'email': user.email,
@@ -71,8 +76,9 @@ class AuthService {
     }, merge: true);
   }
 
-  void signOut() {
+  void signOut(context) {
     _auth.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => authButtons()));
   }
 }
 
