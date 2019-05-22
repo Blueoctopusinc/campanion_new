@@ -29,7 +29,7 @@ dependencies:
   firebase_auth: 0.8.1
   google_sign_in: ^3.2.4
   rxdart: 0.20.0
-  google_maps_flutter: ^0.4.0
+  google_maps_flutter: ^0.5.10
   location_permissions: ^2.0.0
   geolocator: ^4.0.0
   image_picker: ^0.6.0+3
