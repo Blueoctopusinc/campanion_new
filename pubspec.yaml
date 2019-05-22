@@ -33,7 +33,7 @@ dependencies:
   location_permissions: ^2.0.0
   geolocator: ^4.0.0
   image_picker: ^0.6.0+3
-  firebase_storage: ^2.0.0
+  firebase_storage: ^3.0.0
   uuid: ^2.0.1
   path_provider: ^1.1.0
 
