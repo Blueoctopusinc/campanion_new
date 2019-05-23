@@ -30,12 +30,14 @@ dependencies:
   google_sign_in: ^3.2.4
   rxdart: 0.20.0
   google_maps_flutter: ^0.5.10
-  location_permissions: ^2.0.0
+  location_permissions: ^2.0.1
   geolocator: ^4.0.0
   image_picker: ^0.6.0+3
   firebase_storage: ^3.0.0
   uuid: ^2.0.1
   path_provider: ^1.1.0
+  permission_handler: '^3.0.0'
+
 
 
 

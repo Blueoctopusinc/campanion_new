@@ -4,7 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'auth.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:location_permissions/location_permissions.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:campanion_new/model/map_model.dart';
 import 'package:campanion_new/add_location.dart';
@@ -22,10 +21,9 @@ class mapScreenState extends State<mapScreen> {
   final _pageOptions = ['Map', 'Locations', 'Settings'];
   final block = mapBlock();
   bool isMap = true;
-  Stream<ServiceStatus> status = LocationPermissions().serviceStatus;
   @override
   Widget build(BuildContext context) {
-    block.loc_layer.listen(print);
+
 
     // TODO: implement build
     Geolocator geolocator = Geolocator();
@@ -251,12 +249,3 @@ class UserProfileState extends State<UserProfile> {
   }
 }
 
-void checkStatus(BuildContext context) {
-  LocationPermissions()
-      .checkServiceStatus()
-      .then((ServiceStatus serviceStatus) {
-    final SnackBar snackbar = SnackBar(content: Text(serviceStatus.toString()));
-
-    Scaffold.of(context).showSnackBar(snackbar);
-  });
-}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>417311122578-qqa5gkkbv467p0orni87l2k38o0mkobk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.417311122578-qqa5gkkbv467p0orni87l2k38o0mkobk</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>417311122578-2g3i1u6hgljse54tpc49l32e7u6hilrr.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB6o99zNss9K0xFQjt0uSjf40JmY6OhDfk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>417311122578</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.campanionNew</string>
+	<key>PROJECT_ID</key>
+	<string>campanion-979dc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>campanion-979dc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:417311122578:ios:f9aa14dee5cc8551</string>
+	<key>DATABASE_URL</key>
+	<string>https://campanion-979dc.firebaseio.com</string>
+</dict>
+</plist>

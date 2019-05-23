@@ -34,7 +34,7 @@ class add_location_bloc {
     this._uid = id;
     print(this._uid);
     print("Above was my id");
-
+    
 
 
     locName.listen((data){

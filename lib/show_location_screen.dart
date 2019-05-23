@@ -16,7 +16,8 @@ class showLocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Column(children: <Widget>[
-      GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(double.parse(lat), double.parse(lon)),zoom: 20.0),)
+      Container(child: GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(double.parse(lat), double.parse(lon)),zoom: 20.0),),)
+      
     ],);
   }
 }
