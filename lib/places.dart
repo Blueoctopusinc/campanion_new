@@ -145,7 +145,7 @@ class AllPlaces extends StatelessWidget {
                                   minWidth: 120,
                                   child: RaisedButton(
                                     onPressed: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>showLocationScreen(c.lat.toString(), c.lon.toString())));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>showLocationScreen(c.lat.toString(), c.lon.toString(), c.name)));
                                       print("clicked");
                                     },
                                     child: Row(
