@@ -16,32 +16,47 @@ class authButtons extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new MaterialApp(
-      title: 'Flutter Demo',
+    return new MaterialApp(theme: ThemeData(fontFamily: 'Roboto'),
+
+      title: 'Campanion',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Login'),
-            backgroundColor: Colors.lime,
-          ),
-          body: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+          body: Container(
+            decoration: BoxDecoration(gradient: LinearGradient(
+              // Where the linear gradient begins and ends
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              // Add one stop for each color. Stops should increase from 0 to 1
+              stops: [0.1, 0.3, 0.7, 0.9],
+              colors: [
+                // Colors are easy thanks to Flutter's Colors class.
+                Colors.green[800],
+                Colors.lightGreen[700],
+                Colors.indigo[600],
+                Colors.indigo[400 ],
+              ],
+            ),),
+            child: Center(
+                child: SizedBox(width: 250,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Campanion", style: TextStyle(fontSize: 45, color: Colors.white, fontWeight: FontWeight.bold),),
+                        Container(constraints: BoxConstraints(maxHeight: 400), child: Image(image: AssetImage('assets/images/drawing.png'),)),
+                        MaterialButton(
 
-                    MaterialButton(
-                        onPressed: () {
-                          authService.googleSignIn(context);
+                            onPressed: () {
+                              authService.googleSignIn(context);
 
-                        } ,
-                        color: Colors.white,
-                        textColor: Colors.black,
-                        child: Text('Login with Google')),
-                    MaterialButton(
-                        onPressed: () => authService.signOut(context),
-                        color: Colors.white,
-                        textColor: Colors.black,
-                        child: Text('Logout')),
-                  ]))),
+                            } ,
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            child: Container(child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children:<Widget>[ Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image(image: AssetImage('assets/images/btn_goog.png')),
+                            ),Text('Login with Google'),] ))),
+                      ]),
+                )),
+          )),
     );
   }
 }

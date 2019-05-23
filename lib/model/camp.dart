@@ -6,8 +6,8 @@ class Camp implements Comparable<Camp> {
   final String description;
   final String photoRef;
   final String id;
-  final double lat;
-  final double lon;
+  final String lat;
+  final String lon;
   final DocumentReference reference;
 
   int compareTo(Camp c) {

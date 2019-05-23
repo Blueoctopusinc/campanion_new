@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:campanion_new/places.dart';
 import 'add_location_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
+                                                                                                                                                                                                                                                                                         
   final subject =  BehaviorSubject<Map<String,dynamic>>();
   Observable<FirebaseUser> user;
   Observable<Map<String, dynamic>> profile;
@@ -53,7 +55,7 @@ class AuthService {
     print("signed in as " + user.displayName);
     loading.add(false);
     if(user != null){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => mapScreen()));
+      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: mapScreen(), duration: Duration(milliseconds: 500)));
     }else{
       final snackBar = SnackBar(content: Text('Google Login Failed'));
       context.showSnackBar(snackBar);

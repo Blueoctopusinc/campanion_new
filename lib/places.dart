@@ -6,6 +6,7 @@ import 'package:campanion_new/model/camp.dart';
 import 'dart:math';
 import 'package:campanion_new/model/map_model.dart';
 import 'show_location_screen.dart';
+import 'package:page_transition/page_transition.dart';
 class AllPlaces extends StatelessWidget {
   static String _uid;
   mapBlock mapbloc;
@@ -34,7 +35,20 @@ class AllPlaces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _content(context),
+      body: Container(decoration: BoxDecoration(gradient: LinearGradient(
+        // Where the linear gradient begins and ends
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        // Add one stop for each color. Stops should increase from 0 to 1
+        stops: [0.1, 0.3, 0.7, 0.9],
+        colors: [
+          // Colors are easy thanks to Flutter's Colors class.
+          Colors.green[800],
+          Colors.lightGreen[700],
+          Colors.indigo[600],
+          Colors.indigo[400 ],
+        ],
+      ),),child: _content(context)),
     );
   }
 
@@ -50,33 +64,25 @@ class AllPlaces extends StatelessWidget {
   }
 
   Widget _distanceText(BuildContext context, Camp c) {
-    double check = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
+    double check = distance(double.parse(c.lat), double.parse(c.lon), mapbloc.lat, mapbloc.lon);
     print(check);
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Container(
           width: 200,
-          height: 20,
-          decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8), topRight: Radius.circular(8))),
-          child: Center(
+
+          child:  Center(
             child: Text(
-              "Distance (KM)",
-              style: TextStyle(fontFamily: "Roboto"),
-            ),
+                "Distance",
+                style: TextStyle(fontFamily: "Roboto", fontStyle: FontStyle.italic, fontSize: 25, color: Colors.white),
+              ),
           ),
-        ),
+          ),
+
         Container(
             width: 200,
-            height: 20,
-            decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8))),
-            child: Center(child: Text(check.round().toString()))),
+            child: Text((check.round().toString()+ " KM") , style: TextStyle(fontFamily: "Roboto", fontStyle: FontStyle.italic, fontSize: 36, color: Colors.white),)),
       ],
     );
   }
@@ -94,6 +100,13 @@ class AllPlaces extends StatelessWidget {
     BuildContext context,
     Camp c,
   ) {
+    Widget descText;
+    if(c.description.isNotEmpty){
+        Padding(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: Container(child: descText = Text(c.description, style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: 'Roboto', fontStyle: FontStyle.italic))),
+        );
+    }
     //double dist = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
     return Center(
         child: Card(
@@ -104,25 +117,25 @@ class AllPlaces extends StatelessWidget {
         ),
         child: ExpansionTile(
 
-          title: Opacity(
-            opacity: 0.9,
-            child: Container(
-                width: 10,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    color: Colors.green),
-                child: Center(
-                    child: Text(
-                  c.name,style: TextStyle(color: Colors.black),
-                ))),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Opacity(
+              opacity: 0.9,
+                      child: Center(
+                        child: Text(
+                    c.name,style: TextStyle(color: Colors.white, fontSize: 36,),
+                  ),
+                      ),
+            ),
           ),
           children: <Widget>[
+
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15.0))),
               child: Column(
                 children: <Widget>[
+                  descText,
                   Opacity(
                     opacity: 0.9,
                     child: Container(
@@ -142,10 +155,10 @@ class AllPlaces extends StatelessWidget {
                               children: <Widget>[
                                 ButtonTheme(
                                   buttonColor: Colors.red,
-                                  minWidth: 120,
+                                  minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>showLocationScreen(c.lat.toString(), c.lon.toString(), c.name)));
+                                      Navigator.push(context, PageTransition(type:PageTransitionType.leftToRight,child:showLocationScreen(c.lat.toString(), c.lon.toString(), c.name)));
                                       print("clicked");
                                     },
                                     child: Row(
@@ -157,7 +170,7 @@ class AllPlaces extends StatelessWidget {
                                   ),
                                 ),
                                 ButtonTheme(
-                                  minWidth: 120,
+                                  minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: (){
                                       print("clicked");
@@ -172,7 +185,7 @@ class AllPlaces extends StatelessWidget {
                                   ),
                                 ),
                                 ButtonTheme(
-                                  minWidth: 120,
+                                  minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: (){
                                       print("clicked");

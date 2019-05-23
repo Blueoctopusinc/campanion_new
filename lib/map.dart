@@ -10,7 +10,27 @@ import 'package:campanion_new/add_location.dart';
 import 'add_location_screen.dart';
 import 'places.dart';
 import 'show_location_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
+import 'dart:io' show Platform;
+
+FloatingActionButton myActionButton (mapBlock block, String uid, BuildContext context){
+  if(Platform.isAndroid){
+    return FloatingActionButton(
+        onPressed: () => {
+          print("myAction button"),
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.rightToLeft, child: AddLocation(
+                    mapbloc: block,
+                    uid: uid,
+                  )))
+        },
+        child: Icon(Icons.add_location),
+        backgroundColor: Colors.indigo);
+  }
+}
 class mapScreen extends StatefulWidget {
   @override
   mapScreenState createState() => mapScreenState();
@@ -35,24 +55,13 @@ class mapScreenState extends State<mapScreen> {
         home: Scaffold(
             floatingActionButton: Visibility(
               visible: isMap,
-              child: FloatingActionButton(
-                  onPressed: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddLocation(
-                                      mapbloc: block,
-                                      uid: authService.uid,
-                                    )))
-                      },
-                  child: Icon(Icons.add_location),
-                  backgroundColor: Color(0xFF1E9F60)),
+              child: myActionButton(block, authService.uid, context)
             ),
             appBar: AppBar(
               title: Text((_pageOptions[_selectedPage]).toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white)),
-              backgroundColor: Color(0xFF1E9F60),
+              backgroundColor: Colors.green,
             ),
             drawer: new Drawer(
                 child: Container(
@@ -101,8 +110,8 @@ class mapScreenState extends State<mapScreen> {
             body: [MyBlockMap(block: block,), AllPlaces(authService.uid,block)].elementAt(_selectedPage)
             ,bottomNavigationBar: new Theme(
               data: Theme.of(context).copyWith(
-                canvasColor: Color(0xFF1E9F60),
-                primaryColor: Color(0xFF034f25),
+                canvasColor: Colors.green,
+                primaryColor: Colors.indigo,
                 textTheme: Theme.of(context)
                     .textTheme
                     .copyWith(caption: new TextStyle(color: Color(0xFFEAEAEA))),
@@ -128,8 +137,7 @@ class mapScreenState extends State<mapScreen> {
                       icon: Icon(Icons.my_location),
                       title: Text('Locations'),
                     ),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.settings), title: Text('Settings'))
+
                   ]),
             )));
   }

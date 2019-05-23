@@ -80,7 +80,7 @@ class add_location_bloc {
   Future<Null> create(String url) async{
     final TransactionHandler myTransaction = (Transaction tx) async {
       print(this._uid);
-      final DocumentSnapshot ds = await tx.get(db.collection('users').document(this._uid).collection('sites').document(_uid));
+      final DocumentSnapshot ds = await tx.get(db.collection('users').document(this._uid).collection('sites').document());
       var locMap = new Map<String,dynamic>();
       locMap['name']=this.locationName;
       locMap['description']=this.locationDescription;
