@@ -24,7 +24,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   firebase_core: ^0.4.0
-  firebase_analytics: ^1.0.4
   cloud_firestore: ^0.11.0
   firebase_auth: ^0.11.1
   google_sign_in: ^3.2.4
@@ -35,9 +34,9 @@ dependencies:
   image_picker: ^0.6.0+3
   firebase_storage: ^3.0.0
   uuid: ^2.0.1
-  path_provider: ^1.1.0
   permission_handler: '^3.0.0'
   page_transition: '^1.1.0'
+  cached_network_image: ^0.8.0
 
 
 
@@ -62,6 +61,7 @@ flutter:
   - assets/images/background.jpg
   - assets/images/drawing.png
   - assets/images/btn_goog.png
+  - assets/images/bright_google.png
 
 
   # To add assets to your application, add an assets section, like this:

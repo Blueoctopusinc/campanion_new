@@ -44,7 +44,7 @@ class _AddLocationState extends State<AddLocation> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.red,
         title: Text('Add Location',),
       ),
       body: Container(
@@ -57,9 +57,9 @@ class _AddLocationState extends State<AddLocation> {
           colors: [
             // Colors are easy thanks to Flutter's Colors class.
             Colors.green[800],
-            Colors.lightGreen[700],
-            Colors.indigo[600],
-            Colors.indigo[400 ],
+            Colors.green[700],
+            Colors.red[600],
+            Colors.red[400 ],
           ],
         ),),
         child: Center(
@@ -139,7 +139,7 @@ class _AddLocationState extends State<AddLocation> {
                                     child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Container(
-                                    decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(20)),
+                                    decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(20)),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
@@ -151,7 +151,7 @@ class _AddLocationState extends State<AddLocation> {
                                           ),
                                         ),
                                         Container(
-                                          decoration: BoxDecoration(color: Colors.indigo, borderRadius: BorderRadius.circular(20),),
+                                          decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(20),),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(

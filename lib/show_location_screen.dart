@@ -18,7 +18,7 @@ class showLocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(appBar: AppBar(title: Text(locname), backgroundColor: Colors.green, ),body: Center(
+    return Scaffold(appBar: AppBar(title: Text(locname), backgroundColor: Colors.red, ),body: Center(
       child: GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(double.parse(lat), double.parse(lon)),zoom: 60.0),markers: _markers,),)
         
       );

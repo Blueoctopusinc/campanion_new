@@ -14,7 +14,7 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
-                                                                                                                                                                                                                                                                                         
+
   final subject =  BehaviorSubject<Map<String,dynamic>>();
   Observable<FirebaseUser> user;
   Observable<Map<String, dynamic>> profile;

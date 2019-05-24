@@ -2,13 +2,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'camp.dart';
+import 'package:campanion_new/auth.dart';
 class places_bloc {
   final _allPlacesSubject = BehaviorSubject<List<Camp>>();
   Observable<List<Camp>> get allPlaces => _allPlacesSubject.stream;
-  String uid;
 
-  places_bloc(String myUid) {
-    this.uid= myUid;
+  places_bloc() {
     _getData();
   }
 
@@ -17,16 +16,14 @@ class places_bloc {
   }
 
   _getData() {
-    print('getting data');
     Firestore.instance
-        .collection("users").document(this.uid).collection('sites')
+        .collection("users").document(authService.uid).collection("sites")
         .snapshots()
         .listen((QuerySnapshot qs) {
       List<Camp> list = [];
       for (DocumentSnapshot ds in qs.documents) {
         final Camp p = Camp.fromSnapshot(ds);
         list.add(p);
-        print(p);
       
       }
       list.sort();

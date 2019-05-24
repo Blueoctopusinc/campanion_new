@@ -28,7 +28,7 @@ FloatingActionButton myActionButton (mapBlock block, String uid, BuildContext co
                   )))
         },
         child: Icon(Icons.add_location),
-        backgroundColor: Colors.indigo);
+        backgroundColor: Colors.green);
   }
 }
 class mapScreen extends StatefulWidget {
@@ -42,16 +42,40 @@ class mapScreenState extends State<mapScreen> {
   final block = mapBlock();
   bool isMap = true;
   @override
+
+  Future<bool> _onWillPop() {
+    return showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
   Widget build(BuildContext context) {
-
-
+    
     // TODO: implement build
     Geolocator geolocator = Geolocator();
     Future<Position> position =
         geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     position.then((Position position) => {print(position), print("Here")});
 
-    return MaterialApp(
+    return new WillPopScope(
+      onWillPop: _onWillPop,
+      
+
+
+    child: MaterialApp(
         home: Scaffold(
             floatingActionButton: Visibility(
               visible: isMap,
@@ -61,7 +85,7 @@ class mapScreenState extends State<mapScreen> {
               title: Text((_pageOptions[_selectedPage]).toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.red
             ),
             drawer: new Drawer(
                 child: Container(
@@ -110,8 +134,8 @@ class mapScreenState extends State<mapScreen> {
             body: [MyBlockMap(block: block,), AllPlaces(authService.uid,block)].elementAt(_selectedPage)
             ,bottomNavigationBar: new Theme(
               data: Theme.of(context).copyWith(
-                canvasColor: Colors.green,
-                primaryColor: Colors.indigo,
+                canvasColor: Colors.red,
+                primaryColor: Colors.green,
                 textTheme: Theme.of(context)
                     .textTheme
                     .copyWith(caption: new TextStyle(color: Color(0xFFEAEAEA))),
@@ -139,8 +163,8 @@ class mapScreenState extends State<mapScreen> {
                     ),
 
                   ]),
-            )));
-  }
+            )))
+    );}
 }
 
 class MyBlockMap extends StatefulWidget {
