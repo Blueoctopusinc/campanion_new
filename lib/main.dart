@@ -31,7 +31,7 @@ class authButtons extends StatelessWidget{
               
             ),),
             child: Center(
-                child: SizedBox(width: 250,
+                child: SizedBox(width: 290,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -44,21 +44,24 @@ class authButtons extends StatelessWidget{
                           child: Container(constraints: BoxConstraints(maxHeight: 400), child: Image(image: AssetImage('assets/images/drawing.png'),)),
                         ),
                         RaisedButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0),),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0),),
                           
 
                             onPressed: () {
                               authService.googleSignIn(context);
 
                             } ,
-                            color: Colors.blue.withOpacity(0),
+                            color: Colors.indigo,
                             textColor: Colors.white,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children:<Widget>[ Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Image(image: AssetImage('assets/images/bright_google.png')),
-                              ),Text('Login with Google'),] )),
+                              ),Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: Text('Login with Google', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              ),] )),
                             )),
                       ]),
                 )),

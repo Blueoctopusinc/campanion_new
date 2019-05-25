@@ -8,7 +8,8 @@ import 'package:campanion_new/model/map_model.dart';
 import 'show_location_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:page_transition/page_transition.dart';
+import 'edit_location_screen.dart';
 class AllPlaces extends StatelessWidget {
   static String _uid;
   mapBlock mapbloc;
@@ -37,18 +38,10 @@ class AllPlaces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Locations"),
-        backgroundColor: Colors.red,
-      ),
+      
       body: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.indigo, Colors.red[400]],
-                begin: const FractionalOffset(0.5, 0.0),
-                end: const FractionalOffset(0.0, 0.7),
-                stops: [0.3, 1.0],
-                tileMode: TileMode.clamp),
+            color: Colors.white
           ),
           child: _content(context)),
     );
@@ -80,15 +73,15 @@ class AllPlaces extends StatelessWidget {
         double.parse(c.lat), double.parse(c.lon), mapbloc.lat, mapbloc.lon);
     print(check);
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            width: 200,
+            
             child: Center(
               child: Text(
-                "Distance:",
+                "Distance: ",
                 style: TextStyle(
                     fontFamily: "Roboto",
                     fontStyle: FontStyle.italic,
@@ -98,13 +91,13 @@ class AllPlaces extends StatelessWidget {
             ),
           ),
           Container(
-              width: 200,
+              
               child: Text(
-                (check.round().toString() + " KM"),
+                (" "+check.round().toString() + "(KM)"),
                 style: TextStyle(
                     fontFamily: "Roboto",
                     fontStyle: FontStyle.italic,
-                    fontSize: 36,
+                    fontSize: 30,
                     color: Colors.white),
               )),
         ],
@@ -114,18 +107,22 @@ class AllPlaces extends StatelessWidget {
 
   Widget _photoDialog(BuildContext context, Camp c) {
     return new AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       backgroundColor: Colors.indigo,
-      title: Text(c.name + " photo", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+      title: Container(child: Text(c.name + " Photo", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 26),), ),
       content: Container(
+        
         color: Colors.indigo,
         child: Column(
           
-                  children:<Widget>[ CachedNetworkImage(
+                  children:<Widget>[ ClipRRect( borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      child: CachedNetworkImage(
             imageUrl: c.photoRef, placeholder: (context, url) => new CircularProgressIndicator(),
             
-          ),Padding(
+          ),
+                  ),Padding(
             padding: const EdgeInsets.only(top: 20.0),
-            child: RaisedButton(color: Colors.red[400],child: Text("EXIT", style: TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: Colors.white),),onPressed: (){Navigator.of(context).pop();},),
+            child: RaisedButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),color: Colors.red[400],child: Text("Exit", style: TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: Colors.white),),onPressed: (){Navigator.of(context).pop();},),
           )],
         ),
       ),
@@ -148,7 +145,7 @@ class AllPlaces extends StatelessWidget {
     Widget descText;
     if (c.description.isNotEmpty) {
       Padding(
-        padding: const EdgeInsets.only(bottom: 25),
+        padding: const EdgeInsets.only(bottom: 25, top: 20),
         child: Column(children: <Widget>[
           Container(
             child: Text("Hello "),
@@ -166,23 +163,12 @@ class AllPlaces extends StatelessWidget {
     //double dist = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
     return Center(
         child: Card(
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          // Where the linear gradient begins and ends
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.00, 0.25, 0.85, 0.99],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            Colors.red[800],
-            Colors.red[400],
-            Colors.red[400],
-            Colors.red[800],
-          ],
-        )),
-        child: ExpansionTile(
+          color: Colors.indigo,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+          ), 
+      child:  ExpansionTile(
+        
           title: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Opacity(
@@ -221,14 +207,24 @@ class AllPlaces extends StatelessWidget {
           ),
           children: <Widget>[
             Container(
+              
               decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.6),
+                  color: Colors.red[400],
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      topLeft: Radius.circular(10.0))),
+                      topRight: Radius.circular(20.0),
+                      topLeft: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
               child: Column(
                 children: <Widget>[
-                  descText,
+                  Container(
+                    
+                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.grey),
+                    
+                    
+                      child: _distanceText(context, c),
+                    
+                  ),
                   Opacity(
                     opacity: 0.9,
                     child: Container(
@@ -238,8 +234,11 @@ class AllPlaces extends StatelessWidget {
                               BorderRadius.all(Radius.circular(10.0))),
                       child: Column(
                         children: <Widget>[
-                          Container(
-                            child: _distanceText(context, c),
+                          Padding(
+                            padding: const EdgeInsets.only(top:10.0),
+                            child: Container(
+                              child: descText,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -247,7 +246,8 @@ class AllPlaces extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 ButtonTheme(
-                                  buttonColor: Colors.indigo,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                  buttonColor: Colors.indigo[400],
                                   minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: () {
@@ -279,12 +279,14 @@ class AllPlaces extends StatelessWidget {
                                   ),
                                 ),
                                 ButtonTheme(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                                   minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: () {
+                                      Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: EditLocation(c: c, uid: _uid,)));
                                       print("clicked");
                                     },
-                                    color: Colors.indigo,
+                                    color: Colors.indigo[400],
                                     child: Row(
                                       children: <Widget>[
                                         Icon(
@@ -311,6 +313,6 @@ class AllPlaces extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 }

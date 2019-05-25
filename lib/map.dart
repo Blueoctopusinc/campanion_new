@@ -14,23 +14,28 @@ import 'package:page_transition/page_transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:io' show Platform;
 
-
-
 class mapScreen extends StatefulWidget {
   @override
   mapScreenState createState() => mapScreenState();
 }
 
 class mapScreenState extends State<mapScreen> {
-
   @override
-  voidinitState(){
+  voidinitState() {
     precacheImage(new AssetImage('assets/images/background.jpg'), context);
     super.initState();
   }
+
   int _selectedPage = 0;
-  final _pageOptions = ['Map', 'Locations', 'Settings'];
-  final block = mapBlock();
+
+  static final block = mapBlock();
+  final _names = [
+    "Map",
+    "Locations"
+  ];
+  final _pageOptions = [MyBlockMap(
+                block: block,
+              ), AllPlaces(authService.uid, block)];
   bool isMap = true;
   @override
   Future<bool> _onWillPop() {
@@ -64,146 +69,99 @@ class mapScreenState extends State<mapScreen> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: MaterialApp(
-            home: Scaffold(
-                
-                appBar: AppBar(
-                    title: Text((_pageOptions[_selectedPage]).toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white)),
-                    backgroundColor: Colors.red[400]),
-                drawer: new Drawer(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/background.jpg'),
-                                fit: BoxFit.cover)),
-                        child: ListView(children: <Widget>[
-                          ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: Text(
-                                'Menu',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 600,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
+            home: Scaffold(extendBody: true,
+          appBar: AppBar(
+            leading: Builder(builder: (context) => IconButton(onPressed: (){Scaffold.of(context).openDrawer();}, icon: Icon(Icons.account_circle,)),),
+              title: Text(_names[_selectedPage],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.red[400]),
+          drawer: new Drawer(
             
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-              
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 10, left: 10, right: 10),
-                                        child: UserProfile())
-                                        ,ButtonTheme(
-                                        minWidth: 280,
-                                        height: 60,
-                                        child: Padding(
-                                            padding: EdgeInsets.only(top: 10),
-                                            child: RaisedButton(
-                                              onPressed: () =>
-                                                  {Navigator.push(context, MaterialPageRoute(builder: (context)=>mapScreen()))},
-                                              color: Colors.indigo[400],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8.0)),
-                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[Text("Map",
-                                                  style: TextStyle(
-                                                      color: Colors.white)), 
-                                                      Icon(Icons.map, color: Colors.white),
-                                                      ],
-                                            )),
-                                    
-                                 )),ButtonTheme(
-                                        minWidth: 280,
-                                        height: 60,
-                                        child: Padding(
-                                            padding: EdgeInsets.only(top: 10),
-                                            child: RaisedButton(
-                                              onPressed: () =>
-                                                  {Navigator.push(context, MaterialPageRoute(builder: (context)=>AllPlaces(authService.uid,block)))},
-                                              color: Colors.indigo,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8.0)),
-                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[Text("Locations",
-                                                  style: TextStyle(
-                                                      color: Colors.white)), 
-                                                      Icon(Icons.nature_people, color: Colors.white,),
-                                                      ],
-                                            )),
-                                    
-                                 )), Expanded(child: new Align(alignment: Alignment.bottomCenter, child: ButtonTheme(
-                                          minWidth: 280,
-                                          height: 60,
-                                          child: Padding(
-                                              padding: EdgeInsets.only(top: 10),
-                                              child: RaisedButton(
-                                                onPressed: () =>
-                                                    {authService.signOut(context)},
-                                                color: Color(0xFFDD4E40),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(8.0)),
-                                                child: Text("Sign Out",
-                                                    style: TextStyle(
-                                                        color: Colors.white)),
-                                              ))),),)
-                                 ]),
-                            ),
-                          )
-                        ]))),
-                body: [
-                  Stack(
-                                      children:<Widget>[ MyBlockMap(
-                      block: block,
-                    ), Align(alignment: Alignment.bottomCenter, child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: ButtonTheme(
-                                          minWidth: 60,
-                                          height: 60,
-                                          child: Padding(
-                                              padding: _myEdge(),
-                                              child: RaisedButton(
-                                                onPressed: () =>
-                                                    {Navigator.push(context, MaterialPageRoute(builder: (context)=>AddLocation(mapbloc: block, uid: authService.uid,)))},
-                                                color: Colors.indigo,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(8.0)),
-                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[
-                                                  Icon(Icons.add_location, color: Colors.white,),Text("Add Location",
-                                                    style: TextStyle(
-                                                        color: Colors.white)), 
-                                                        
-                                                        ],
-                                              )),)),
-                    ))]
-                  ),
-                  AllPlaces(authService.uid, block)
-                ].elementAt(_selectedPage),
-                )));
+              child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/background.jpg'),
+                          fit: BoxFit.cover)),
+                  child: ListView(children: <Widget>[
+                    ListTile(
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: Text(
+                          'Profile',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 600,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 10, left: 10, right: 10),
+                                  child: UserProfile()),
+                              
+                              Expanded(
+                                child: new Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: ButtonTheme(
+                                      minWidth: 280,
+                                      height: 60,
+                                      child: Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: RaisedButton(
+                                            onPressed: () =>
+                                                {authService.signOut(context)},
+                                            color: Color(0xFFDD4E40),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0)),
+                                            child: Text("Sign Out",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ))),
+                                ),
+                              )
+                            ]),
+                      ),
+                    )
+                  ]))),
+          body: _pageOptions[_selectedPage],
+         bottomNavigationBar: BottomAppBar(shape: CircularNotchedRectangle(), clipBehavior: Clip.antiAlias, notchMargin: 4,
+         child: BottomNavigationBar(currentIndex: _selectedPage, onTap: (int index){
+           setState(() {
+             _selectedPage = index;
+           });
+         },items: [
+           BottomNavigationBarItem(title: Text("Map",style:TextStyle(color: Colors.white)),icon: Icon(Icons.map, color: Colors.white,), activeIcon: Icon(Icons.map, color: Colors.indigo,)),
+          BottomNavigationBarItem(title: Text("Locations",style:TextStyle(color: Colors.white)), icon: Icon(Icons.location_on, color: Colors.white,), activeIcon: Icon(Icons.map, color: Colors.indigo,),backgroundColor: Colors.red[400]),
+
+         ],backgroundColor: Colors.red[400],),),
+        floatingActionButton: _myActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,)));
+  }
+  FloatingActionButton _myActionButton(){
+    if(_selectedPage == 0){
+      return FloatingActionButton(backgroundColor: Colors.indigo,child: Icon(Icons.add_location),onPressed: (){},);
   }
 }
-EdgeInsets _myEdge () {
-  if(Platform.isAndroid){
-     return EdgeInsets.only(top:10);
-  }
-  else if(Platform.isIOS){
-    return EdgeInsets.only(top:10, right: 50);
+}
+EdgeInsets _myEdge() {
+  if (Platform.isAndroid) {
+    return EdgeInsets.only(top: 10);
+  } else if (Platform.isIOS) {
+    return EdgeInsets.only(top: 10, right: 50);
   }
 }
+
 class MyBlockMap extends StatefulWidget {
   final mapBlock block;
   MyBlockMap({Key key, this.block}) : super(key: key);
@@ -302,8 +260,15 @@ class UserProfileState extends State<UserProfile> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 20, spreadRadius: 5, offset: Offset(15, 10),)],
-          border:Border.all(color: Colors.red[400], width: 5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54,
+                blurRadius: 20,
+                spreadRadius: 5,
+                offset: Offset(15, 10),
+              )
+            ],
+            border: Border.all(color: Colors.red[400], width: 5),
             shape: BoxShape.circle,
             gradient: LinearGradient(
               // Where the linear gradient begins and ends
