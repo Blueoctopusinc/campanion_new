@@ -35,22 +35,16 @@ class AllPlaces extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(appBar: AppBar(title: Text("Locations"),backgroundColor: Colors.red,),
       body: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              // Where the linear gradient begins and ends
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              // Add one stop for each color. Stops should increase from 0 to 1
-              stops: [0.1, 0.3, 0.7, 0.9],
-              colors: [
-                // Colors are easy thanks to Flutter's Colors class.
-                Colors.green[800],
-                Colors.green[700],
-                Colors.green[600],
-                Colors.green[400],
-              ],
+            gradient: 
+              LinearGradient(colors: [Colors.indigo, Colors.red[400]],
+                begin: const FractionalOffset(0.5, 0.0),
+                end: const FractionalOffset(0.0, 0.7),
+                stops: [0.3,1.0],
+                tileMode: TileMode.clamp
+              
             ),
           ),
           child: _content(context)),
@@ -132,13 +126,16 @@ class AllPlaces extends StatelessWidget {
     if (c.description.isNotEmpty) {
       Padding(
         padding: const EdgeInsets.only(bottom: 25),
-        child: Container(
-            child: descText = Text(c.description,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.italic))),
+        child: Column(
+                  children:<Widget>[ 
+                    Container(child: Text("Hello"),),Container(
+              child: descText = Text(c.description,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.italic))),
+                  ]),
       );
     }
     //double dist = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
@@ -151,13 +148,13 @@ class AllPlaces extends StatelessWidget {
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
           // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.1, 0.5, 0.75, 0.95],
+          stops: [0.00, 0.25, 0.85, 0.99],
           colors: [
             // Colors are easy thanks to Flutter's Colors class.
+            Colors.red[800],
             Colors.red[400],
-            Colors.red[700],
-            Colors.red[600],
             Colors.red[400],
+            Colors.red[800],
           ],
         )),
         child: ExpansionTile(
@@ -166,13 +163,13 @@ class AllPlaces extends StatelessWidget {
             child: Opacity(
               opacity: 0.9,
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: <Widget>[
-                Container(width: 80, height: 80,child: ClipOval(child:CachedNetworkImage(imageUrl: c.photoRef,placeholder: (context, url) => new CircularProgressIndicator(),errorWidget: (context, url, urror)=> Icon(Icons.error),fit: BoxFit.fill,),)),
+                Container( width: 80, height: 80,child: ClipOval(child:CachedNetworkImage(imageUrl: c.photoRef,placeholder: (context, url) => new CircularProgressIndicator(),errorWidget: (context, url, urror)=> Icon(Icons.error),fit: BoxFit.fill,),)),
                 Center(
                   child: Text(
                     c.name,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 36,
+                      fontSize: 36, fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
@@ -181,8 +178,8 @@ class AllPlaces extends StatelessWidget {
           ),
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              decoration: BoxDecoration( color: Colors.grey.withOpacity(0.6),
+                  borderRadius: BorderRadius.only(topRight:Radius.circular(10.0), topLeft: Radius.circular(10.0))),
               child: Column(
                 children: <Widget>[
                   descText,
@@ -204,7 +201,8 @@ class AllPlaces extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 ButtonTheme(
-                                  buttonColor: Colors.green,
+                                  
+                                  buttonColor: Colors.indigo,
                                   minWidth: 100,
                                   child: RaisedButton(
                                     onPressed: () {
@@ -219,11 +217,14 @@ class AllPlaces extends StatelessWidget {
                                                   c.name)));
                                       print("clicked");
                                     },
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(Icons.map, color: Colors.white,),
-                                        Text("View on Map", style: TextStyle(color: Colors.white)),
-                                      ],
+                                    child: Container(decoration: BoxDecoration(),
+                                      child: Row(
+                                        
+                                        children: <Widget>[
+                                          Icon(Icons.map, color: Colors.white,),
+                                          Text("View on Map", style: TextStyle(color: Colors.white)),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -233,7 +234,7 @@ class AllPlaces extends StatelessWidget {
                                     onPressed: () {
                                       print("clicked");
                                     },
-                                    color: Colors.green,
+                                    color: Colors.indigo,
                                     child: Row(
                                       children: <Widget>[
                                         Icon(Icons.photo_album, color: Colors.white,),
@@ -243,12 +244,14 @@ class AllPlaces extends StatelessWidget {
                                   ),
                                 ),
                                 ButtonTheme(
+                                  
                                   minWidth: 100,
                                   child: RaisedButton(
+                                  
                                     onPressed: () {
                                       print("clicked");
                                     },
-                                    color: Colors.green,
+                                    color: Colors.indigo,
                                     child: Row(
                                       children: <Widget>[
                                         Icon(Icons.edit, color: Colors.white,),

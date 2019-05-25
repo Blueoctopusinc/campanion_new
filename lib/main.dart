@@ -15,8 +15,6 @@ class MyApp extends StatelessWidget {
 class authButtons extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    Color gradientStart = Colors.green; //Change start gradient color here
-  Color gradientEnd = Colors.red; //Change end gradient color here
 
     // TODO: implement build
     return new MaterialApp(theme: ThemeData(fontFamily: 'Roboto'),
@@ -25,10 +23,10 @@ class authButtons extends StatelessWidget{
       home: Scaffold(
           body: Container(
             decoration: BoxDecoration(gradient:
-              LinearGradient(colors: [gradientStart, gradientEnd],
-                begin: const FractionalOffset(0.3, 0.0),
+              LinearGradient(colors: [Colors.indigo, Colors.red[400]],
+                begin: const FractionalOffset(0.55, 0.0),
                 end: const FractionalOffset(0.0, 0.7),
-                stops: [0.0,1.0],
+                stops: [0.3,1.0],
                 tileMode: TileMode.clamp
               
             ),),

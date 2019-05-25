@@ -11,59 +11,50 @@ import 'add_location_screen.dart';
 import 'places.dart';
 import 'show_location_screen.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:io' show Platform;
 
-FloatingActionButton myActionButton (mapBlock block, String uid, BuildContext context){
-  if(Platform.isAndroid){
-    return FloatingActionButton(
-        onPressed: () => {
-          print("myAction button"),
-          Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: AddLocation(
-                    mapbloc: block,
-                    uid: uid,
-                  )))
-        },
-        child: Icon(Icons.add_location),
-        backgroundColor: Colors.green);
-  }
-}
+
+
 class mapScreen extends StatefulWidget {
   @override
   mapScreenState createState() => mapScreenState();
 }
 
 class mapScreenState extends State<mapScreen> {
+
+  @override
+  voidinitState(){
+    precacheImage(new AssetImage('assets/images/background.jpg'), context);
+    super.initState();
+  }
   int _selectedPage = 0;
   final _pageOptions = ['Map', 'Locations', 'Settings'];
   final block = mapBlock();
   bool isMap = true;
   @override
-
   Future<bool> _onWillPop() {
     return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    ) ?? false;
+          context: context,
+          builder: (context) => new AlertDialog(
+                title: new Text('Are you sure?'),
+                content: new Text('Do you want to exit an App'),
+                actions: <Widget>[
+                  new FlatButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: new Text('No'),
+                  ),
+                  new FlatButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: new Text('Yes'),
+                  ),
+                ],
+              ),
+        ) ??
+        false;
   }
+
   Widget build(BuildContext context) {
-    
     // TODO: implement build
     Geolocator geolocator = Geolocator();
     Future<Position> position =
@@ -71,100 +62,139 @@ class mapScreenState extends State<mapScreen> {
     position.then((Position position) => {print(position), print("Here")});
 
     return new WillPopScope(
-      onWillPop: _onWillPop,
-      
-
-
-    child: MaterialApp(
-        home: Scaffold(
-            floatingActionButton: Visibility(
-              visible: isMap,
-              child: myActionButton(block, authService.uid, context)
-            ),
-            appBar: AppBar(
-              title: Text((_pageOptions[_selectedPage]).toString(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.red
-            ),
-            drawer: new Drawer(
-                child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/background.jpg'),
-                            fit: BoxFit.cover)),
-                    child: ListView(children: <Widget>[
-                      ListTile(
-                        title: Text(
-                          'Account Details',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
+        onWillPop: _onWillPop,
+        child: MaterialApp(
+            home: Scaffold(
+                
+                appBar: AppBar(
+                    title: Text((_pageOptions[_selectedPage]).toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white)),
+                    backgroundColor: Colors.red[400]),
+                drawer: new Drawer(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/images/background.jpg'),
+                                fit: BoxFit.cover)),
+                        child: ListView(children: <Widget>[
+                          ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 50),
+                              child: Text(
+                                'Menu',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 10, left: 10, right: 10),
-                                  child: UserProfile()),
-                              ButtonTheme(
-                                  minWidth: 280,
-                                  height: 60,
-                                  child: Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: RaisedButton(
-                                        onPressed: () =>
-                                            {authService.signOut(context)},
-                                        color: Color(0xFFDD4E40),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
-                                        child: Text("Sign Out",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      ))),
-                            ]),
-                      )
-                    ]))),
-            body: [MyBlockMap(block: block,), AllPlaces(authService.uid,block)].elementAt(_selectedPage)
-            ,bottomNavigationBar: new Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Colors.red,
-                primaryColor: Colors.green,
-                textTheme: Theme.of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Color(0xFFEAEAEA))),
-              ),
-              child: BottomNavigationBar(
-                  currentIndex: _selectedPage,
-                  onTap: (int index) {
-                    if(index==0){
-                      setState(() {
-                        _selectedPage = index;
-                        isMap = true;
-                      });
-                    }else{
-                    setState(() {
-                      _selectedPage = index;
-                      isMap = false;
-                    });
-                  }},
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.map), title: Text('Map')),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.my_location),
-                      title: Text('Locations'),
-                    ),
-
-                  ]),
-            )))
-    );}
+                          Container(
+                            height: 600,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+            
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+              
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 10, left: 10, right: 10),
+                                        child: UserProfile())
+                                        ,ButtonTheme(
+                                        minWidth: 280,
+                                        height: 60,
+                                        child: Padding(
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: RaisedButton(
+                                              onPressed: () =>
+                                                  {Navigator.push(context, MaterialPageRoute(builder: (context)=>mapScreen()))},
+                                              color: Colors.indigo[400],
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0)),
+                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[Text("Map",
+                                                  style: TextStyle(
+                                                      color: Colors.white)), 
+                                                      Icon(Icons.map, color: Colors.white),
+                                                      ],
+                                            )),
+                                    
+                                 )),ButtonTheme(
+                                        minWidth: 280,
+                                        height: 60,
+                                        child: Padding(
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: RaisedButton(
+                                              onPressed: () =>
+                                                  {Navigator.push(context, MaterialPageRoute(builder: (context)=>AllPlaces(authService.uid,block)))},
+                                              color: Colors.indigo,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0)),
+                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[Text("Locations",
+                                                  style: TextStyle(
+                                                      color: Colors.white)), 
+                                                      Icon(Icons.nature_people, color: Colors.white,),
+                                                      ],
+                                            )),
+                                    
+                                 )), Expanded(child: new Align(alignment: Alignment.bottomCenter, child: ButtonTheme(
+                                          minWidth: 280,
+                                          height: 60,
+                                          child: Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                              child: RaisedButton(
+                                                onPressed: () =>
+                                                    {authService.signOut(context)},
+                                                color: Color(0xFFDD4E40),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(8.0)),
+                                                child: Text("Sign Out",
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ))),),)
+                                 ]),
+                            ),
+                          )
+                        ]))),
+                body: [
+                  Stack(
+                                      children:<Widget>[ MyBlockMap(
+                      block: block,
+                    ), Align(alignment: Alignment.bottomCenter, child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: ButtonTheme(
+                                          minWidth: 280,
+                                          height: 60,
+                                          child: Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                              child: RaisedButton(
+                                                onPressed: () =>
+                                                    {Navigator.push(context, MaterialPageRoute(builder: (context)=>AddLocation(mapbloc: block, uid: authService.uid,)))},
+                                                color: Colors.indigo,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(8.0)),
+                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,children: <Widget>[
+                                                  Icon(Icons.add_location, color: Colors.white,),Text("Add Location",
+                                                    style: TextStyle(
+                                                        color: Colors.white)), 
+                                                        
+                                                        ],
+                                              )),)),
+                    ))]
+                  ),
+                  AllPlaces(authService.uid, block)
+                ].elementAt(_selectedPage),
+                )));
+  }
 }
 
 class MyBlockMap extends StatefulWidget {
@@ -261,23 +291,64 @@ class UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return UserAccountsDrawerHeader(
-      decoration: BoxDecoration(
-          color: Color(0xFF1E9F60).withOpacity(0.8),
-          border: new Border.all(
-              color: Color(0xFF13663d).withOpacity(0.5),
-              width: 6.0,
-              style: BorderStyle.solid),
-          borderRadius: new BorderRadius.circular(30.0)),
-      accountName: Text(authService.displayName),
-      accountEmail: Text(
-        authService.eMail,
-        textAlign: TextAlign.center,
-      ),
-      currentAccountPicture: CircleAvatar(
-        backgroundImage: NetworkImage(authService.profilePhoto),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 20, spreadRadius: 5, offset: Offset(15, 10),)],
+          border:Border.all(color: Colors.red[400], width: 5),
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              // Where the linear gradient begins and ends
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              // Add one stop for each color. Stops should increase from 0 to 1
+              stops: [0.1, 0.3, 0.7, 0.9],
+              colors: [
+                // Colors are easy thanks to Flutter's Colors class.
+                Colors.indigo[900],
+                Colors.indigo[400],
+                Colors.indigo[600],
+                Colors.indigo[400],
+              ],
+            )),
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 100,
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: authService.profilePhoto,
+                  ),
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      authService.displayName,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    ),
+                    Text(
+                      authService.eMail,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 }
-
