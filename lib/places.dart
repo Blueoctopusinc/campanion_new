@@ -8,6 +8,7 @@ import 'package:campanion_new/model/map_model.dart';
 import 'show_location_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 class AllPlaces extends StatelessWidget {
   static String _uid;
   mapBlock mapbloc;
@@ -35,17 +36,19 @@ class AllPlaces extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Locations"),backgroundColor: Colors.red,),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Locations"),
+        backgroundColor: Colors.red,
+      ),
       body: Container(
           decoration: BoxDecoration(
-            gradient: 
-              LinearGradient(colors: [Colors.indigo, Colors.red[400]],
+            gradient: LinearGradient(
+                colors: [Colors.indigo, Colors.red[400]],
                 begin: const FractionalOffset(0.5, 0.0),
                 end: const FractionalOffset(0.0, 0.7),
-                stops: [0.3,1.0],
-                tileMode: TileMode.clamp
-              
-            ),
+                stops: [0.3, 1.0],
+                tileMode: TileMode.clamp),
           ),
           child: _content(context)),
     );
@@ -109,6 +112,26 @@ class AllPlaces extends StatelessWidget {
     );
   }
 
+  Widget _photoDialog(BuildContext context, Camp c) {
+    return new AlertDialog(
+      backgroundColor: Colors.indigo,
+      title: Text(c.name + " photo", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+      content: Container(
+        color: Colors.indigo,
+        child: Column(
+          
+                  children:<Widget>[ CachedNetworkImage(
+            imageUrl: c.photoRef, placeholder: (context, url) => new CircularProgressIndicator(),
+            
+          ),Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: RaisedButton(color: Colors.red[400],child: Text("EXIT", style: TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: Colors.white),),onPressed: (){Navigator.of(context).pop();},),
+          )],
+        ),
+      ),
+    );
+  }
+
   Widget _listView(BuildContext context, List<Camp> camps) {
     return ListView.builder(
       itemCount: camps.length,
@@ -126,16 +149,18 @@ class AllPlaces extends StatelessWidget {
     if (c.description.isNotEmpty) {
       Padding(
         padding: const EdgeInsets.only(bottom: 25),
-        child: Column(
-                  children:<Widget>[ 
-                    Container(child: Text("Hello"),),Container(
+        child: Column(children: <Widget>[
+          Container(
+            child: Text("Hello "),
+          ),
+          Container(
               child: descText = Text(c.description,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 26,
                       fontFamily: 'Roboto',
                       fontStyle: FontStyle.italic))),
-                  ]),
+        ]),
       );
     }
     //double dist = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
@@ -162,24 +187,45 @@ class AllPlaces extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Opacity(
               opacity: 0.9,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: <Widget>[
-                Container( width: 80, height: 80,child: ClipOval(child:CachedNetworkImage(imageUrl: c.photoRef,placeholder: (context, url) => new CircularProgressIndicator(),errorWidget: (context, url, urror)=> Icon(Icons.error),fit: BoxFit.fill,),)),
-                Center(
-                  child: Text(
-                    c.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36, fontWeight: FontWeight.bold
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          showDialog(context: context, builder: (BuildContext context)=>_photoDialog(context, c),);
+                        },
+                        child: Container(
+                            width: 80,
+                            height: 80,
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: c.photoRef,
+                                placeholder: (context, url) =>
+                                    new CircularProgressIndicator(),
+                                errorWidget: (context, url, urror) =>
+                                    Icon(Icons.error),
+                                fit: BoxFit.fill,
+                              ),
+                            ))),
+                    Center(
+                      child: Text(
+                        c.name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                ),
-              ]),
+                  ]),
             ),
           ),
           children: <Widget>[
             Container(
-              decoration: BoxDecoration( color: Colors.grey.withOpacity(0.6),
-                  borderRadius: BorderRadius.only(topRight:Radius.circular(10.0), topLeft: Radius.circular(10.0))),
+              decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.6),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0),
+                      topLeft: Radius.circular(10.0))),
               child: Column(
                 children: <Widget>[
                   descText,
@@ -198,10 +244,9 @@ class AllPlaces extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 ButtonTheme(
-                                  
                                   buttonColor: Colors.indigo,
                                   minWidth: 100,
                                   child: RaisedButton(
@@ -217,12 +262,17 @@ class AllPlaces extends StatelessWidget {
                                                   c.name)));
                                       print("clicked");
                                     },
-                                    child: Container(decoration: BoxDecoration(),
+                                    child: Container(
+                                      decoration: BoxDecoration(),
                                       child: Row(
-                                        
                                         children: <Widget>[
-                                          Icon(Icons.map, color: Colors.white,),
-                                          Text("View on Map", style: TextStyle(color: Colors.white)),
+                                          Icon(
+                                            Icons.map,
+                                            color: Colors.white,
+                                          ),
+                                          Text("View on Map",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
                                         ],
                                       ),
                                     ),
@@ -237,25 +287,13 @@ class AllPlaces extends StatelessWidget {
                                     color: Colors.indigo,
                                     child: Row(
                                       children: <Widget>[
-                                        Icon(Icons.photo_album, color: Colors.white,),
-                                        Text("View Photo", style: TextStyle(color: Colors.white),),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                ButtonTheme(
-                                  
-                                  minWidth: 100,
-                                  child: RaisedButton(
-                                  
-                                    onPressed: () {
-                                      print("clicked");
-                                    },
-                                    color: Colors.indigo,
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(Icons.edit, color: Colors.white,),
-                                        Text("Edit", style: TextStyle(color: Colors.white)),
+                                        Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        ),
+                                        Text("Edit",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                       ],
                                     ),
                                   ),

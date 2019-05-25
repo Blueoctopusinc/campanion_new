@@ -171,10 +171,10 @@ class mapScreenState extends State<mapScreen> {
                     ), Align(alignment: Alignment.bottomCenter, child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: ButtonTheme(
-                                          minWidth: 280,
+                                          minWidth: 60,
                                           height: 60,
                                           child: Padding(
-                                              padding: EdgeInsets.only(top: 10),
+                                              padding: _myEdge(),
                                               child: RaisedButton(
                                                 onPressed: () =>
                                                     {Navigator.push(context, MaterialPageRoute(builder: (context)=>AddLocation(mapbloc: block, uid: authService.uid,)))},
@@ -196,7 +196,14 @@ class mapScreenState extends State<mapScreen> {
                 )));
   }
 }
-
+EdgeInsets _myEdge () {
+  if(Platform.isAndroid){
+     return EdgeInsets.only(top:10);
+  }
+  else if(Platform.isIOS){
+    return EdgeInsets.only(top:10, right: 50);
+  }
+}
 class MyBlockMap extends StatefulWidget {
   final mapBlock block;
   MyBlockMap({Key key, this.block}) : super(key: key);
