@@ -14,7 +14,11 @@ class places_bloc {
   dispose() {
     _allPlacesSubject.close();
   }
-
+  _deleteData(Camp c) async{
+    await Firestore.instance.runTransaction((Transaction deleteTransaction) async{
+      await deleteTransaction.delete(c.reference);
+    });
+  }
   _getData() {
     Firestore.instance
         .collection("users").document(authService.uid).collection("sites")

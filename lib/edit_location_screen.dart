@@ -16,6 +16,7 @@ class EditLocation extends StatefulWidget {
 }
 
 class _EditLocationState extends State<EditLocation> {
+  
   Camp c;
   edit_location_bloc bloc;
   static String myUID;
