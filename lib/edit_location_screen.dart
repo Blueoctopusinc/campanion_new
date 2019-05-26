@@ -45,7 +45,7 @@ class _EditLocationState extends State<EditLocation> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.green[400],
         title: Text(
           'Edit Location',
         ),
@@ -56,7 +56,7 @@ class _EditLocationState extends State<EditLocation> {
             Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Colors.indigo, Colors.red[400]],
+                      colors: [Colors.indigo, Colors.green[400]],
                       begin: const FractionalOffset(0.5, 0.0),
                       end: const FractionalOffset(0.0, 0.7),
                       stops: [0.3, 1.0],

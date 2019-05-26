@@ -39,6 +39,7 @@ dependencies:
   page_transition: '^1.1.0'
   cached_network_image: ^0.8.0
   flutter_slidable: ^0.5.3
+  geocoder: ^0.1.2
 
   
 

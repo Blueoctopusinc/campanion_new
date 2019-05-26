@@ -23,7 +23,7 @@ class authButtons extends StatelessWidget{
       home: Scaffold(
           body: Container(
             decoration: BoxDecoration(gradient:
-              LinearGradient(colors: [Colors.indigo, Colors.red[400]],
+              LinearGradient(colors: [Colors.indigo, Colors.green[400]],
                 begin: const FractionalOffset(0.55, 0.0),
                 end: const FractionalOffset(0.0, 0.7),
                 stops: [0.3,1.0],

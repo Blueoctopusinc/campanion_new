@@ -11,6 +11,29 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'edit_location_screen.dart';
 import 'show_location_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoder/geocoder.dart';
+
+
+class linePainter extends CustomPainter{
+  int mycount;
+
+
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
+    paint.strokeWidth=1;
+    canvas.drawLine(Offset(size.width/5, (size.height/2)*1.5), Offset((size.width/5)*4, (size.height/2)*1.5), paint);
+    canvas.drawLine(Offset(0, size.height/2), Offset(size.width, size.height/2), paint);
+  }
+
+  @override
+  bool shouldRepaint(linePainter oldDelegate) => false;
+
+  @override
+  bool shouldRebuildSemantics(linePainter oldDelegate) => false;
+}
 
 class AllPlaces extends StatelessWidget {
   _deleteData(Camp c) async{
@@ -46,7 +69,14 @@ class AllPlaces extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(gradient: 
+              LinearGradient(colors: [Colors.deepPurple, Colors.indigo[400]],
+                begin: const FractionalOffset(0.55, 0.0),
+                end: const FractionalOffset(0.0, 0.7),
+                stops: [0.3,1.0],
+                tileMode: TileMode.clamp
+              
+            ),),
           child: _content(context)),
     );
   }
@@ -67,9 +97,9 @@ class AllPlaces extends StatelessWidget {
       return ButtonTheme(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15))),
-        buttonColor: Colors.indigo,
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5))),
+        buttonColor: Colors.green[400],
         child: RaisedButton(
           onPressed: () {
             Navigator.push(
@@ -161,14 +191,15 @@ class AllPlaces extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          
           Container(
             child: Center(
               child: Text(
                 "Distance: ",
                 style: TextStyle(
                     fontFamily: "Roboto",
-                    fontStyle: FontStyle.italic,
-                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                     color: Colors.white),
               ),
             ),
@@ -178,9 +209,9 @@ class AllPlaces extends StatelessWidget {
             (" " + check.round().toString() + "(KM)"),
             style: TextStyle(
                 fontFamily: "Roboto",
-                fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
                 fontSize: 30,
-                color: Colors.white),
+                color: Colors.green[400]),
           )),
         ],
       ),
@@ -226,7 +257,7 @@ class AllPlaces extends StatelessWidget {
     return new AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      backgroundColor: Colors.red[400],
+      backgroundColor: Colors.green[400],
       title: Container(
         child: Text(
           c.name + " Photo",
@@ -262,31 +293,52 @@ class AllPlaces extends StatelessWidget {
     BuildContext context,
     Camp c,
   ) {
+      Future<String>cAddress;
+      if(c.lat != null){
+      cAddress =Geocoder.local.findAddressesFromCoordinates(Coordinates(double.parse(c.lat), double.parse(c.lon))).then((onValue){
+          
+          
+           return onValue.first.addressLine;
+
+        });
+      
+      }
     Widget descText;
     if (c.description.isNotEmpty) {
       Padding(
+        
         padding: const EdgeInsets.only(bottom: 25, top: 20),
         child: Column(children: <Widget>[
           Container(
             child: Text("Hello "),
           ),
           Container(
-              child: descText = Text(c.description,
+              child:Column(children: <Widget>[
+                           
+                    descText = Column(children: <Widget>[
+                             Text("Information", style: TextStyle(color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Roboto',fontWeight: FontWeight.bold)),CustomPaint(painter: linePainter(),child: Container(width: 80,height: 20,),),Text(c.description, 
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 26,
+                    fontSize: 18,
                     fontFamily: 'Roboto',
-                  ))),
-        ]),
+                  )
+              ),CustomPaint(painter: linePainter(),child: Container(width: 30,height: 20,),)],)
+              ]),
+        )]),
       );
     }
     //double dist = distance(c.lat, c.lon, mapbloc.lat, mapbloc.lon);
     return Center(
       child: Card(
-        color: Colors.red[400],
+        color: Colors.grey[400].withOpacity(0.2),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         child: ExpansionTile(
+          onExpansionChanged: (value)=>{
+              
+          },
           title: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Opacity(
@@ -330,7 +382,7 @@ class AllPlaces extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 36,
+                              fontSize: 29,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -343,7 +395,7 @@ class AllPlaces extends StatelessWidget {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: Colors.red[300],
+                
               ),
               child: Column(
                 children: <Widget>[
@@ -354,11 +406,11 @@ class AllPlaces extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Slidable(
                             actionPane: SlidableDrawerActionPane(),
-                            actionExtentRatio: 0.25,
+                            actionExtentRatio: 0.50,
                             actions: <Widget>[
                               ClipRRect(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                                    BorderRadius.all(Radius.circular(5)),
                                 child: IconSlideAction(
                                   onTap: () {
                                     Navigator.push(
@@ -372,7 +424,7 @@ class AllPlaces extends StatelessWidget {
                                             )));
                                   },
                                   icon: Icons.mode_edit,
-                                  color: Colors.green,
+                                  color: Colors.amber[400],
                                   caption: 'Edit',
                                 ),
                               ),
@@ -380,7 +432,7 @@ class AllPlaces extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: ClipRRect(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   child: IconSlideAction(
                                     onTap: () {
                                       showDialog(context: context,
@@ -394,60 +446,81 @@ class AllPlaces extends StatelessWidget {
                                 ),
                               )
                             ],
-                            child: Opacity(
-                              opacity: 0.9,
-                              child: Container(
-                                constraints: BoxConstraints(),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Column(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 60.0),
-                                              child: Icon(
-                                                Icons.chevron_right,
-                                                color: Colors.white,
-                                                size: 36,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              child: _distanceText(context, c),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Container(
-                                                child: descText,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: <Widget>[],
+                            child: Container(
+                              constraints: BoxConstraints(),
+                              decoration: BoxDecoration(
+                                
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0))),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.chevron_right,
+                                            color: Colors.white,
+                                            size: 36,
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      Container(
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)),                                           color: Colors.grey.withBlue(200).withOpacity(0.5),
+),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              FutureBuilder(
+                                                future: cAddress,
+                                                initialData: "Getting Address",
+                                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                  
+                                                  return Text(snapshot.data, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 18),);
+                                                },
+                                              ),
+                                                                                            CustomPaint(painter: linePainter(),child: Container(width: 300,height: 20,),),
+
+                                              Container(alignment: Alignment.topLeft,
+                                                child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                                                
+Container(
+                                          
+                                                  child: _distanceText(context, c),
+                                                  
+                                                ),
+                                                CustomPaint(painter: linePainter(),child: Container(width: 160,height: 20,),),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      top: 10.0),
+                                                  child: Container(
+                                                    child: descText,
+                                                  ),
+                                                ),
+                                                ],),
+                                              )
+                                            ,
+                                              
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[],
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),

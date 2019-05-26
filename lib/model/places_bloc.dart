@@ -3,22 +3,22 @@ import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'camp.dart';
 import 'package:campanion_new/auth.dart';
+import 'package:geocoder/geocoder.dart';
+
+
+    
 class places_bloc {
   final _allPlacesSubject = BehaviorSubject<List<Camp>>();
   Observable<List<Camp>> get allPlaces => _allPlacesSubject.stream;
-
   places_bloc() {
     _getData();
+   
   }
 
   dispose() {
     _allPlacesSubject.close();
   }
-  _deleteData(Camp c) async{
-    await Firestore.instance.runTransaction((Transaction deleteTransaction) async{
-      await deleteTransaction.delete(c.reference);
-    });
-  }
+  
   _getData() {
     Firestore.instance
         .collection("users").document(authService.uid).collection("sites")

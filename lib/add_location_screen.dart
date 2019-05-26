@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:campanion_new/model/map_model.dart';
-
+import 'package:geocoder/geocoder.dart';
 class AddLocation extends StatefulWidget {
   final mapBlock mapbloc;
   final String uid;
@@ -42,7 +42,7 @@ class _AddLocationState extends State<AddLocation> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.green[400],
         title: Text(
           'Add Location',
         ),
@@ -52,7 +52,7 @@ class _AddLocationState extends State<AddLocation> {
                                Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                  colors: [Colors.indigo, Colors.red[400]],
+                  colors: [Colors.indigo, Colors.green[400]],
                   begin: const FractionalOffset(0.5, 0.0),
                   end: const FractionalOffset(0.0, 0.7),
                   stops: [0.3, 1.0],
@@ -75,157 +75,163 @@ class _AddLocationState extends State<AddLocation> {
                           
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white30,
-                            borderRadius: BorderRadius.all(Radius.circular(20))),
-                        width: 380,
-                        child: Column(
-                                              children:<Widget>[StreamBuilder(
-                                  stream: mapBloc.pos_stream,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      bloc.lat.add(snapshot.data.latitude);
-                                      bloc.lon.add(snapshot.data.longitude);
-                                      return Container(
-                                        decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20)),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                        child: Text("Latitude: ",
-                                                            style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontSize: 18,
-                                                                fontStyle: FontStyle
-                                                                    .italic))),
-                                                    Container(
-                                                        child: Text(
-                                                            snapshot.data.latitude
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.white)))
-                                                  ],
-                                                ),
+                      Column(
+                                            children:<Widget>[
+                                              StreamBuilder(
+                                                stream: bloc.addressSubj ,
+                          
+                                                builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                  if (snapshot.hasData){
+
+                                                        return Container(
+                                                    child: Text(snapshot.data.first.addressLine, style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 24,
+                                                              fontStyle: FontStyle
+                                                                  .italic)),
+                                                  );
+                                                  }else{
+                                                    return Container(width: 0.0 , height: 0.0,);
+                                                  }
+                                                  
+                                                },
                                               ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      child: Text(
-                                                        "Longitude: ",
+                                              StreamBuilder(
+                                stream: mapBloc.pos_stream,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData) {
+                                    bloc.lat.add(snapshot.data.latitude);
+                                    bloc.lon.add(snapshot.data.longitude);
+                                    bloc.coordSubject.add(new Coordinates(snapshot.data.latitude, snapshot.data.longitude));
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Container(
+                                          
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Container(
+                                                    child: Text("Latitude: ",
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 18,
-                                                            fontStyle:
-                                                                FontStyle.italic),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                        child: Text(
-                                                            snapshot.data.longitude
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.white)))
-                                                  ],
+                                                            fontStyle: FontStyle
+                                                                .italic))),
+                                                Container(
+                                                    child: Text(
+                                                        snapshot.data.latitude
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white)))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Text(
+                                                    "Longitude: ",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                        fontStyle:
+                                                            FontStyle.italic),
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    } else {
-                                      return Text("No Data");
-                                              }
-                                  },
-                                              ),Form(
-                              key: _formKey,
-                              child: Column(
-                                children: <Widget>[
-                                   
-                                  Column(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 10, 10),
-                                          child: TextFormField(
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 36),
-                                            decoration: InputDecoration(
-                                                labelText: 'Location Name',
-                                                labelStyle: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 28)),
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return 'Please enter a location name.';
-                                              }
-                                            },
-                                            onSaved: (value) {
-                                              bloc.locName.add(value);
-                                            },
+                                                Container(
+                                                    child: Text(
+                                                        snapshot.data.longitude
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white)))
+                                              ],
+                                            ),
                                           ),
+                                        )
+                                      ],
+                                    );
+                                  } else {
+                                    return Text("No Data");
+                                            }
+                                },
+                                            ),Form(
+                            key: _formKey,
+                            child: Column(
+                              children: <Widget>[
+                                 
+                                Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 10),
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 36),
+                                          decoration: InputDecoration(
+                                              labelText: 'Location Name',
+                                              labelStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 28)),
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter a location name.';
+                                            }
+                                          },
+                                          onSaved: (value) {
+                                            bloc.locName.add(value);
+                                          },
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 10),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 10, 10),
-                                          child: TextFormField(
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 30),
-                                            decoration: InputDecoration(
-                                                labelText: 'Location Description',
-                                                labelStyle: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 28)),
-                                            onSaved: (value) {
-                                              bloc.locDec.add(value);
-                                            },
-                                          ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 10),
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 30),
+                                          decoration: InputDecoration(
+                                              labelText: 'Location Description',
+                                              labelStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 28)),
+                                          onSaved: (value) {
+                                            bloc.locDec.add(value);
+                                          },
                                         ),
                                       ),
-                                  GestureDetector(
-                              onTap: () {
-                                bloc.getImage();
-                              },
-                              child: Container(
-                                  child: StreamBuilder<File>(
-                                stream: bloc.bsubject.stream,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<File> snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.green, width: 5)),
+                                    ),
+                                GestureDetector(
+                            onTap: () {
+                              bloc.getImage();
+                            },
+                            child: Container(
+                                child: StreamBuilder<File>(
+                              stream: bloc.bsubject.stream,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<File> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                                          child: Container(
+                                        
                                         height: 200,
                                         width: 400,
                                         child: Image.file(
@@ -233,57 +239,56 @@ class _AddLocationState extends State<AddLocation> {
                                           fit: BoxFit.cover,
                                         ),
                                       ),
-                                    );
-                                  } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white70,
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(
-                                                  color: Colors.red, width: 5)),
-                                          height: 200,
-                                          width: 400,
-                                          child: Icon(
-                                            Icons.camera_alt,
-                                            size: 40.0,
-                                          )),
-                                    );
-                                  }
-                                },
-                              )),
-                            ),
-                                 
-                                      Padding(
-                          padding: const EdgeInsets.only(top:50.0,bottom: 50, left: 10, right: 10),
-                          child: RaisedButton(
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30)),
-                            color: Colors.indigo,
-                            child: Center(
-                                child: Container(
-                              height: 80,
-                              width: 200,
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[Icon(Icons.save, color: Colors.white,size: 50,),Text("Save", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: Colors.white),), ]),
+                                    ),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            borderRadius: BorderRadius.circular(20),
+                                            ),
+                                        height: 200,
+                                        width: 400,
+                                        child: Icon(
+                                          Icons.camera_alt,
+                                          size: 40.0,
+                                        )),
+                                  );
+                                }
+                              },
                             )),
-                            onPressed: () {
+                          ),
+                               
+                                    Padding(
+                        padding: const EdgeInsets.only(top:50.0,bottom: 50, left: 10, right: 10),
+                        child: RaisedButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30)),
+                          color: Colors.indigo,
+                          child: Center(
+                              child: Container(
+                            height: 80,
+                            width: 200,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[Icon(Icons.save, color: Colors.white,size: 50,),Text("Save", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: Colors.white),), ]),
+                          )),
+                          onPressed: () {
             final form = _formKey.currentState;
             if (form.validate()) {
                 form.save();
                 bloc.uploadFile();
                 Navigator.pop(context);
             }},
-                          ),
+                        ),
                       )
-                                    ],
-                                  ),
-                                ],
-                              )),
-                                              ]),
-                      ),
+                                  ],
+                                ),
+                              ],
+                            )),
+                                            ]),
                       
                     ],
                   ),

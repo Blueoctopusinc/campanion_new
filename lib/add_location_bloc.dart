@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:geocoder/geocoder.dart';
 class add_location_bloc {
    String _uid;
    File _image;
@@ -28,15 +29,19 @@ class add_location_bloc {
    BehaviorSubject<double> lat = new BehaviorSubject<double>();
    BehaviorSubject<double> lon = new BehaviorSubject<double>();
    BehaviorSubject<File> bsubject = new BehaviorSubject<File>();
-
-
+   BehaviorSubject<Coordinates> coordSubject = new BehaviorSubject<Coordinates>();
+   BehaviorSubject<List<Address>> addressSubj = new BehaviorSubject<List<Address>>();
   add_location_bloc(String id){
     this._uid = id;
     print(this._uid);
     print("Above was my id");
     
+  
 
-
+    coordSubject.listen((data)async{
+      var addresses = await Geocoder.local.findAddressesFromCoordinates(data);
+      addressSubj.add(addresses);
+    });
     locName.listen((data){
       print(data);
       this.locationName = data;

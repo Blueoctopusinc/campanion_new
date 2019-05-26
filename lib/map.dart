@@ -76,7 +76,7 @@ class mapScreenState extends State<mapScreen> {
               title: Text(_names[_selectedPage],
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.red[400]),
+              backgroundColor: Colors.green[400]),
           drawer: new Drawer(
             
               child: Container(
@@ -143,15 +143,17 @@ class mapScreenState extends State<mapScreen> {
            });
          },items: [
            BottomNavigationBarItem(title: Text("Map",style:TextStyle(color: Colors.white)),icon: Icon(Icons.map, color: Colors.white,), activeIcon: Icon(Icons.map, color: Colors.indigo,)),
-          BottomNavigationBarItem(title: Text("Locations",style:TextStyle(color: Colors.white)), icon: Icon(Icons.location_on, color: Colors.white,), activeIcon: Icon(Icons.map, color: Colors.indigo,),backgroundColor: Colors.red[400]),
+          BottomNavigationBarItem(title: Text("Locations",style:TextStyle(color: Colors.white)), icon: Icon(Icons.location_on, color: Colors.white,), activeIcon: Icon(Icons.map, color: Colors.indigo,),backgroundColor: Colors.green[400]),
 
-         ],backgroundColor: Colors.red[400],),),
+         ],backgroundColor: Colors.green[400],),),
         floatingActionButton: _myActionButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,)));
   }
   FloatingActionButton _myActionButton(){
     if(_selectedPage == 0){
-      return FloatingActionButton(backgroundColor: Colors.indigo,child: Icon(Icons.add_location),onPressed: (){},);
+      return FloatingActionButton(backgroundColor: Colors.indigo,child: Icon(Icons.add_location),onPressed: (){
+        Navigator.push(context, PageTransition(type:PageTransitionType.downToUp, child: AddLocation(mapbloc: block, uid: authService.uid,)));
+      },);
   }
 }
 }
@@ -269,7 +271,7 @@ class UserProfileState extends State<UserProfile> {
                 offset: Offset(15, 10),
               )
             ],
-            border: Border.all(color: Colors.red[400], width: 5),
+            border: Border.all(color: Colors.green[400], width: 5),
             shape: BoxShape.circle,
             gradient: LinearGradient(
               // Where the linear gradient begins and ends
